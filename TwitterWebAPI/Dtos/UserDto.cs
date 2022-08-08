@@ -23,7 +23,7 @@ namespace TwitterWebAPI.Dtos
         [Required(ErrorMessage = "Enter password")]
         public string Password { get; set; }
         [Required(ErrorMessage = "Enter confirm password")]
-        [Compare("Password", ErrorMessage ="Passwords didn't match. Try again.")]
+        [Compare("Password", ErrorMessage ="Passwords didn't match")]
         public string ConfirmPassword { get; set; }
         [Required(ErrorMessage = "Enter contact number")]
         [StringLength(10)]
