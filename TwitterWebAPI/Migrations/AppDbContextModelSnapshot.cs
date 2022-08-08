@@ -71,6 +71,10 @@ namespace TwitterWebAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TweetId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("TweetComments");
                 });
 
@@ -92,6 +96,10 @@ namespace TwitterWebAPI.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TweetId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("TweetLikes");
                 });
@@ -135,6 +143,44 @@ namespace TwitterWebAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("TwitterWebAPI.Models.TweetComment", b =>
+                {
+                    b.HasOne("TwitterWebAPI.Models.Tweet", "Tweet")
+                        .WithMany()
+                        .HasForeignKey("TweetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TwitterWebAPI.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tweet");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TwitterWebAPI.Models.TweetLike", b =>
+                {
+                    b.HasOne("TwitterWebAPI.Models.Tweet", "Tweet")
+                        .WithMany()
+                        .HasForeignKey("TweetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TwitterWebAPI.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tweet");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

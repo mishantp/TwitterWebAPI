@@ -5,13 +5,16 @@ namespace TwitterWebAPI.Models
 {
     public class TweetComment
     {
+        [Key]
         public int Id { get; set; }
         public int ParentCommentId { get; set; }
-        [ForeignKey("User")]
+        [Required]
         public int UserId { get; set; }
-        [ForeignKey("Tweet")]
+        [Required]
         public int TweetId { get; set; }
         [Required]
         public string Message { get; set; }
+        public virtual User User { get; set; }
+        public virtual Tweet Tweet { get; set; }
     }
 }

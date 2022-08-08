@@ -17,10 +17,10 @@ namespace TwitterWebAPI.Controllers
             _TweetService = tweetService;
         }
 
-        [HttpPost("{userName}/like/{id}")]
-        public async Task<IActionResult> AddLike(string userName, int id)
+        [HttpPost("{username}/like/{id}")]
+        public async Task<IActionResult> AddLike(string username, int id)
         {
-            var response = await _TweetService.AddTweetLike(userName, id);
+            var response = await _TweetService.AddTweetLike(username, id);
             if (!response.Success)
             {
                 return BadRequest(response);
@@ -28,10 +28,10 @@ namespace TwitterWebAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPost("{userName}/reply/{id}")]
-        public async Task<IActionResult> AddTweetReply(string userName, int id, bool intitalComment, string message)
+        [HttpPost("{username}/reply/{id}")]
+        public async Task<IActionResult> AddTweetReply(string username, int id, bool intitalComment, string message)
         {
-            var response = await _TweetService.AddTweetReply(userName, id, intitalComment, message);
+            var response = await _TweetService.AddTweetReply(username, id, intitalComment, message);
             if (!response.Success)
             {
                 return BadRequest(response);
@@ -50,10 +50,10 @@ namespace TwitterWebAPI.Controllers
             return BadRequest(response);
         }
 
-        [HttpPost("{userName}/add")]
-        public async Task<IActionResult> AddTweet(string userName, Tweet tweet)
+        [HttpPost("{username}/add")]
+        public async Task<IActionResult> AddTweet(string username, Tweet tweet)
         {
-            var response = await _TweetService.AddTweet(tweet, userName);
+            var response = await _TweetService.AddTweet(tweet, username);
             if (!response.Success)
             {
                 return BadRequest(response);
@@ -61,10 +61,10 @@ namespace TwitterWebAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPut("{userName}/udpate/{id}")]
-        public async Task<IActionResult> Update(string userName, int id, Tweet tweet)
+        [HttpPut("{username}/udpate/{id}")]
+        public async Task<IActionResult> Update(string username, int id, Tweet tweet)
         {
-            var response = await _TweetService.UpdateTweet(tweet, userName);
+            var response = await _TweetService.UpdateTweet(tweet, username);
             if (response != null)
             {
                 return Ok(response);
@@ -72,10 +72,10 @@ namespace TwitterWebAPI.Controllers
             return BadRequest(response);
         }
 
-        [HttpDelete("{userName}/delete/{id}")]
-        public async Task<IActionResult> Delete(string userName, int id)
+        [HttpDelete("{username}/delete/{id}")]
+        public async Task<IActionResult> Delete(string username, int id)
         {
-            var response = await _TweetService.DeleteTweet(id, userName);
+            var response = await _TweetService.DeleteTweet(id, username);
             if (response != null)
             {
                 return Ok(response);
@@ -83,11 +83,11 @@ namespace TwitterWebAPI.Controllers
             return BadRequest(response);
         }
 
-        [HttpGet("{userName}/all")]
-        public async Task<IActionResult> Get(string userName)
+        [HttpGet("{username}/all")]
+        public async Task<IActionResult> Get(string username)
         {
 
-            var response = await _TweetService.GetAllTweetByUser(userName);
+            var response = await _TweetService.GetAllTweetByUser(username);
             if (response != null)
             {
                 return Ok(response);

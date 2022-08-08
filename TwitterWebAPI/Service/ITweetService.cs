@@ -4,13 +4,13 @@ namespace TwitterWebAPI.Service
 {
     public interface ITweetService
     {
-        Task<Response<Tweet>> AddTweet(Tweet TweetObject, string userName);
+        Task<Response<Tweet>> AddTweet(Tweet tweet, string username);
         Task<List<Tweet>> GetAllTweet();
-        Task<bool> DeleteTweet(int TweetId, string userName);
-        Task<List<Tweet>> GetAllTweetByUser(string userName);
-        Task<Tweet> UpdateTweet(Tweet TweetObject, string userName);
+        Task<bool> DeleteTweet(int TweetId, string username);
+        Task<List<Tweet>> GetAllTweetByUser(string username);
+        Task<Tweet> UpdateTweet(Tweet tweet, string username);
         Task<Tweet> GetTweetById(int TweetId);
-        Task<Response<TweetLike>> AddTweetLike(string UserName, int TweetId);
-        Task<Response<TweetComment>> AddTweetReply(string UserName, int TweetId, bool IntitalComment, string Message);
+        Task<Response<TweetLike>> AddTweetLike(string username, int TweetId);
+        Task<Response<TweetComment>> AddTweetReply(string username, int tweetId, bool intitalComment, string tweetMessage);
     }
 }

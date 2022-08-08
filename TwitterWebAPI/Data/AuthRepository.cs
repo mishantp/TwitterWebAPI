@@ -29,7 +29,7 @@ namespace TwitterWebAPI.Data
             if (await IsUserExists(user.LoginId))
             {
                 response.Success = false;
-                response.ErrorMessage = "User already exixts. Kindly try with diffrent LoginId";
+                response.Message = "User already exixts. Kindly try with diffrent LoginId";
                 return response;
             }
 
@@ -39,7 +39,7 @@ namespace TwitterWebAPI.Data
             await _appDbContext.SaveChangesAsync();
 
             response.Result = user.Id;
-            response.ErrorMessage = "User registerd succesfully";
+            response.Message = "User registerd succesfully";
 
             return response;
         }
@@ -51,12 +51,12 @@ namespace TwitterWebAPI.Data
             if (user == null)
             {
                 response.Success = false;
-                response.ErrorMessage = "User not found";
+                response.Message = "User not found";
             }
             else if (!VerifyHashPassword(password, user.HashPassword, user.SaltPassword))
             {
                 response.Success = false;
-                response.ErrorMessage = "Wrong password";
+                response.Message = "Wrong password";
             }
             else
             {
@@ -99,7 +99,7 @@ namespace TwitterWebAPI.Data
             };
 
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8
-                .GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+                .GetBytes(_configuration.GetSection("TweetSettings:Token").Value));
 
             SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
@@ -133,7 +133,7 @@ namespace TwitterWebAPI.Data
                 await _appDbContext.SaveChangesAsync();
 
                 response.Result = newPassword;
-                response.ErrorMessage = "Newpassword created succesfully";
+                response.Message = "New password created succesfully";
             }
 
             return response;

@@ -13,12 +13,12 @@ namespace TwitterWebAPI.Service
             _appDbContext = appDbContext;
         }
 
-        public async Task<Response<Tweet>> AddTweet(Tweet TweetObject, string userName)
+        public async Task<Response<Tweet>> AddTweet(Tweet tweet, string userName)
         {
             var response = new Response<Tweet>();
             if (string.IsNullOrEmpty(userName))
             {
-                response.ErrorMessage = "Username must be required.";
+                response.Message = "Username must be required.";
                 response.Success = false;
             }
             else
@@ -27,85 +27,85 @@ namespace TwitterWebAPI.Service
                 if (user == null)
                 {
                     response.Success = false;
-                    response.ErrorMessage = "Username not exist.";
+                    response.Message = "Username doen't exist.";
                 }
                 else
                 {
                     var createduser = await _appDbContext.Users.FirstOrDefaultAsync(u => u.LoginId.ToLower() == userName.ToLower());
-                    TweetObject.CreatedDate = DateTime.Now;
-                    TweetObject.UserId = createduser.Id;
-                    _appDbContext.Tweets.Add(TweetObject);
+                    tweet.CreatedDate = DateTime.Now;
+                    tweet.UserId = createduser.Id;
+                    _appDbContext.Tweets.Add(tweet);
                     _appDbContext.SaveChangesAsync();
                     response.Success = true;
-                    response.Result = TweetObject;
+                    response.Result = tweet;
                 }
             }
             return response;
         }
 
-        public async Task<Response<TweetLike>> AddTweetLike(string UserName, int TweetId)
+        public async Task<Response<TweetLike>> AddTweetLike(string username, int tweetId)
         {
             var response = new Response<TweetLike>();
-            if (string.IsNullOrEmpty(UserName))
+            if (string.IsNullOrEmpty(username))
             {
-                response.ErrorMessage = "Username must be required.";
+                response.Message = "Username must be required.";
                 response.Success = false;
             }
             else
             {
-                var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.LoginId.ToLower() == UserName.ToLower());
+                var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.LoginId.ToLower() == username.ToLower());
                 if (user == null)
                 {
                     response.Success = false;
-                    response.ErrorMessage = "Username not exist.";
+                    response.Message = "Username not exist.";
                 }
                 else
                 {
                     if (user != null)
                     {
-                        TweetLike TweetLike = new TweetLike();
-                        TweetLike.UserId = user.Id;
-                        TweetLike.TweetId = TweetId;
-                        TweetLike.LikeCount = 1;
-                        _appDbContext.Add(TweetLike);
+                        TweetLike tweetLike = new TweetLike();
+                        tweetLike.UserId = user.Id;
+                        tweetLike.TweetId = tweetId;
+                        tweetLike.LikeCount = 1;
+                        _appDbContext.Add(tweetLike);
                         _appDbContext.SaveChangesAsync();
                         response.Success = true;
-                        response.Result = TweetLike;
+                        response.Result = tweetLike;
                     }
                 }
             }
             return response;
         }
 
-        public async Task<Response<TweetComment>> AddTweetReply(string UserName, int TweetId, bool IntitalComment, string Message)
+        public async Task<Response<TweetComment>> AddTweetReply(string username, int tweetId, bool intitalComment, string tweetMessage)
         {
             var response = new Response<TweetComment>();
-            if (string.IsNullOrEmpty(UserName))
+            if (string.IsNullOrEmpty(username))
             {
-                response.ErrorMessage = "Username must be required.";
+                response.Message = "Username must be required.";
                 response.Success = false;
             }
             else
             {
-                var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.LoginId.ToLower() == UserName.ToLower());
+                var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.LoginId.ToLower() == username.ToLower());
                 if (user == null)
                 {
                     response.Success = false;
-                    response.ErrorMessage = "Username not exist.";
+                    response.Message = "Username not exist.";
                 }
                 else
                 {
-                    var TweetCommentOject = _appDbContext.TweetComments.FirstOrDefault(TweetComment => TweetComment.TweetId == TweetId);
+                    var TweetCommentOject = _appDbContext.TweetComments.FirstOrDefault(TweetComment => TweetComment.TweetId == tweetId);
                     TweetComment TweetComment = new TweetComment();
-                    if (!IntitalComment && TweetCommentOject != null)
+                    if (!intitalComment && TweetCommentOject != null)
                     {
                         TweetComment.ParentCommentId = TweetCommentOject.Id;
                     }
                     if (user != null)
                     {
                         TweetComment.UserId = user.Id;
-                        TweetComment.TweetId = TweetId;
-                        TweetComment.Message = Message;
+                        TweetComment.TweetId = tweetId;
+                        TweetComment.Message = tweetMessage;
                         _appDbContext.Add(TweetComment);
                         _appDbContext.SaveChangesAsync();
                         response.Success = true;
@@ -148,12 +148,12 @@ namespace TwitterWebAPI.Service
             return await tweetObj;
         }
 
-        public async Task<Tweet> UpdateTweet(Tweet TweetObject, string userName)
+        public async Task<Tweet> UpdateTweet(Tweet tweet, string userName)
         {
-            TweetObject.ModifiedDate = DateTime.Now;
-            _appDbContext.Tweets.Update(TweetObject);
+            tweet.ModifiedDate = DateTime.Now;
+            _appDbContext.Tweets.Update(tweet);
             _appDbContext.SaveChanges();
-            return TweetObject;
+            return tweet;
         }
     }
 }

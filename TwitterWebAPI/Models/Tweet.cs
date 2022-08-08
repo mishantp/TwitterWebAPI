@@ -5,6 +5,7 @@ namespace TwitterWebAPI.Models
 {
     public class Tweet
     {
+        [Key]
         public int Id { get; set; }
         [ForeignKey("User")]
         public int UserId { get; set; }
