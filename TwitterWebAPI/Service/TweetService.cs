@@ -95,7 +95,7 @@ namespace TwitterWebAPI.Service
                 }
                 else
                 {
-                    var TweetCommentOject = _appDbContext.TweetComments.FirstOrDefault(TweetComment => TweetComment.TweetId == tweetId);
+                    var TweetCommentOject = _appDbContext.TweetComments.FirstOrDefault(t => t.TweetId == tweetId);
                     TweetComment TweetComment = new TweetComment();
                     if (!intitalComment && TweetCommentOject != null)
                     {

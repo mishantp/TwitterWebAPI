@@ -26,12 +26,6 @@ namespace TwitterWebAPI.Data
             Response<int> response = new Response<int>();
 
             CreateHashPassword(password, out byte[] hashPassword, out byte[] saltPassword);
-            if (await IsUserExists(user.LoginId))
-            {
-                response.Success = false;
-                response.Message = "User already exixts. Kindly try with diffrent LoginId";
-                return response;
-            }
 
             user.HashPassword = hashPassword;
             user.SaltPassword = saltPassword;
@@ -39,7 +33,7 @@ namespace TwitterWebAPI.Data
             await _appDbContext.SaveChangesAsync();
 
             response.Result = user.Id;
-            response.Message = "User registerd succesfully";
+            response.Message = "User registered succesfully";
 
             return response;
         }
@@ -56,20 +50,13 @@ namespace TwitterWebAPI.Data
             else if (!VerifyHashPassword(password, user.HashPassword, user.SaltPassword))
             {
                 response.Success = false;
-                response.Message = "Wrong password";
+                response.Message = "Password didn't match";
             }
             else
             {
                 response.Result = CreateJWTToken(user);
             }
             return response;
-        }
-
-        public async Task<bool> IsUserExists(string username)
-        {
-            if (await _appDbContext.Users.AnyAsync(u => u.LoginId.ToLower() == username.ToLower()))
-                return true;
-            return false;
         }
 
         private void CreateHashPassword(string password, out byte[] passwordHash, out byte[] passwordSalt)

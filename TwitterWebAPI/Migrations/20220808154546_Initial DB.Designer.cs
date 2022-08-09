@@ -12,8 +12,8 @@ using TwitterWebAPI.Data;
 namespace TwitterWebAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220808150634_Initial Table")]
-    partial class InitialTable
+    [Migration("20220808154546_Initial DB")]
+    partial class InitialDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
